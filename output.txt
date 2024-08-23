@@ -1,0 +1,66 @@
+Line no. 	 Token no. 		 Token 		 Lexeme
+
+      2		       0		 Identifier	 include
+      2		       1		 Identifier	   stdio
+      2		       2		 Identifier	       h
+      5		       3		 Identifier	    char
+      5		       4		 Identifier	   input
+      5		       5		 Digit		       1
+      5		       6		 Digit		       0
+      5		       7		 Special symbol	       ;
+      6		       8		 Keyword	     int
+      6		       9		 Identifier	       i
+      6		      10		 Digit		       0
+      6		      11		 Identifier	   valid
+      6		      12		 Digit		       1
+      6		      13		 Special symbol	       ;
+      8		      14		 Identifier	    void
+      8		      15		 Identifier	       E
+      8		      16		 Special symbol	       )
+      9		      17		 Special symbol	       {
+     10		      18		 Identifier	       T
+     10		      19		 Special symbol	       )
+     10		      20		 Special symbol	       ;
+     11		      21		 Identifier	       E
+     11		      22		 Identifier	    dash
+     11		      23		 Special symbol	       )
+     11		      24		 Special symbol	       ;
+     12		      25		 Special symbol	       }
+     14		      26		 Identifier	    void
+     14		      27		 Keyword	    main
+     14		      28		 Special symbol	       )
+     15		      29		 Special symbol	       {
+     16		      30		 Identifier	  printf
+     16		      31		 Identifier	   Enter
+     16		      32		 Identifier	   input
+     16		      33		 Identifier	  string
+     16		      34		 Special symbol	       )
+     16		      35		 Special symbol	       ;
+     17		      36		 Identifier	   scanf
+     17		      37		 Special symbol	       %
+     17		      38		 Identifier	       s
+     17		      39		 Identifier	   input
+     17		      40		 Special symbol	       ;
+     19		      41		 Identifier	       E
+     19		      42		 Special symbol	       )
+     19		      43		 Special symbol	       ;
+     21		      44		 Keyword	      if
+     21		      45		 Special symbol	       (
+     21		      46		 Identifier	   valid
+     21		      47		 Digit		       1
+     21		      48		 Identifier	       i
+     21		      49		 Identifier	  strlen
+     21		      50		 Identifier	   input
+     21		      51		 Special symbol	       )
+     22		      52		 Identifier	  printf
+     22		      53		 Identifier	 Accepted
+     22		      54		 Identifier	       n
+     22		      55		 Special symbol	       )
+     22		      56		 Special symbol	       ;
+     23		      57		 Keyword	    else
+     24		      58		 Identifier	  printf
+     24		      59		 Identifier	 Rejected
+     24		      60		 Identifier	       n
+     24		      61		 Special symbol	       )
+     24		      62		 Special symbol	       ;
+     25		      63		 Special symbol	       }
