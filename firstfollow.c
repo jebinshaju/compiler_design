@@ -1,136 +1,113 @@
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
-int nop, m = 0;
-char prod[10][10], res[10];
+int n, m = 0, i = 0, j = 0;
+char a[10][10], f[10];
 
-void FIRST(char c);
-void FOLLOW(char c);
-void result(char c);
+void follow(char c);
+void first(char c);
+void firstT(char c, int x, int y);
+void firstF(char c, char z, int x, int y);
 
-int main()
-{
-	int i;
-	int choice;
-	char c;
-
-	printf("Enter the no. of productions : ");
-	scanf("%d", &nop);
-	puts("\nEnter the production string like \"E=E+T\" \nand epsilon as #\n");
-
-	for (i = 0; i < nop; ++i)
-	{
-		printf("Enter production Number %d : ", i + 1);
-		scanf("%s", prod[i]);
-	}
-	do
-	{
-		m = 0;
-		memset(res, '\0', sizeof(res));
-
-		printf("\nFind FOLLOW of --> ");
-		scanf(" %c", &c);
-
-		if (isupper(c))
-			FOLLOW(c);
-		else
-		{
-			printf("Not Possible");
-			return 0;
-		}
-
-		printf("Follow (%c) = { ", c);
-		for (i = 0; i < m; ++i)
-			printf("%c ", res[i]);
-		puts(" }");
-
-		printf("Do you want to continue(Press 1 to continue...) ? ");
-		scanf("%d", &choice);
-	} while (choice == 1);
-
-	return 0;
+int main() {
+    int i, z;
+    char c, ch;
+    printf("Enter the no of productions: ");
+    scanf("%d", &n);
+    printf("Enter the productions: ");
+    for (i = 0; i < n; i++)
+        scanf("%s%c", a[i], &ch);
+    
+    do {
+        m = 0;
+        printf("Enter element whose first and follow is to be found: ");
+        scanf("%c", &c);
+        first(c);
+        printf("First(%c)= ", c);
+        for (i = 0; i < m; i++)
+            printf("%c ", f[i]);
+        printf("\n");
+        strcpy(f, ""); 
+        m = 0;
+        follow(c);
+        printf("Follow(%c)= ", c);
+        for (i = 0; i < m; i++)
+            printf("%c ", f[i]);
+        printf("\n\n");
+        printf("Continue(0/1)? ");
+        scanf("%d%c", &z, &ch);
+    } while (z == 1);
+    return 0;
 }
 
-void FOLLOW(char c)
-{
-	int i, j;
-	if (prod[0][0] == c)
-		result('$');
-	for (i = 0; i < nop; ++i)
-	{
-		for (j = 2; j <= strlen(prod[i]); ++j)
-		{
-			if (prod[i][j] == c)
-			{
-				if (prod[i][j + 1] != '\0')
-					FIRST(prod[i][j + 1]);
-				if (prod[i][j + 1] == '\0' && c != prod[i][0])
-					FOLLOW(prod[i][0]);
-			}
-		}
-	}
-	return;
+void first(char c) {
+    int k;
+    if (!isupper(c))
+        f[m++] = c;
+    for (k = 0; k < n; k++) {
+        if (a[k][0] == c) {
+            if (a[k][2] == '#')
+                f[m++] = '#';
+            else if (islower(a[k][2]))
+                f[m++] = a[k][2];
+            else
+                firstT(a[k][2], k, 3);
+        }
+    }
 }
 
-void FIRST(char c)
-{
-	int k;
-	if (!(isupper(c)))
-		result(c);
-	for (k = 0; k < nop; ++k)
-	{
-		if (prod[k][0] == c)
-		{
-			if (prod[k][2] == '#')
-				FOLLOW(prod[k][0]);
-			else if (prod[k][2] == c)
-				return;
-			else if (islower(prod[k][2]))
-				result(prod[k][2]);
-			else
-				FIRST(prod[k][2]);
-		}
-	}
-	return;
+void firstT(char c, int x, int y) {
+    int k;
+    if (!isupper(c))
+        f[m++] = c;
+    for (k = 0; k < n; k++) {
+        if (a[k][0] == c) {
+            if (a[k][2] == '#') {
+                if (a[x][y] != '\0')
+                    firstT(a[x][y], x, y + 1);
+                else
+                    f[m++] = '#';
+            } else if (islower(a[k][2]))
+                f[m++] = a[k][2];
+            else
+                firstT(a[k][2], k, 3);
+        }
+    }
 }
 
-void result(char c)
-{
-	int i;
-	for (i = 0; i <= m; ++i)
-		if (res[i] == c)
-			return;
-	res[m++] = c;
+void follow(char c) {
+    if (a[0][0] == c)
+        f[m++] = '$';
+    for (i = 0; i < n; i++) {
+        for (j = 2; j < strlen(a[i]); j++) {
+            if (a[i][j] == c) {
+                if (a[i][j + 1] != '\0')
+                    firstF(a[i][j + 1], a[i][0], i, j + 2);
+                if (a[i][j + 1] == '\0' && c != a[i][0])
+                    follow(a[i][0]);
+            }
+        }
+    }
 }
 
-/*
-	Input/ Output :-
-	-------------
-	Enter the no. of productions : 8
-	Enter the production string like "E=E+T"
-	and epsilon as #
-	Enter production Number 1 : E=TX
-	Enter production Number 2 : X=+TX
-	Enter production Number 3 : X=#
-	Enter production Number 4 : T=FY
-	Enter production Number 5 : Y=*FY
-	Enter production Number 6 : Y=#
-	Enter production Number 7 : F=(E)
-	Enter production Number 8 : F=i
-	Find FOLLOW of --> E
-	Follow (E) = { $ )  }
-	Do you want to continue(Press 1 to continue...) ? 1
-	Find FOLLOW of --> X
-	Follow (X) = { $ )  }
-	Do you want to continue(Press 1 to continue...) ? 1
-	Find FOLLOW of --> T
-	Follow (T) = { + $ )  }
-	Do you want to continue(Press 1 to continue...) ? 1
-	Find FOLLOW of --> Y
-	Follow (Y) = { + $ )  }
-	Do you want to continue(Press 1 to continue...) ? 1
-	Find FOLLOW of --> F
-	Follow (F) = { * + $ )  }
-	Do you want to continue(Press 1 to continue...) ? 0
-*/
+void firstF(char c, char z, int x, int y) {
+    int k;
+    if (!isupper(c))
+        f[m++] = c;
+    for (k = 0; k < n; k++) {
+        if (a[k][0] == c) {
+            if (a[k][2] == '#') {
+                if (a[x][y] != '\0')
+                    firstF(a[x][y], z, x, y + 1);
+                else
+                    follow(a[x][0]);
+            } else if (islower(a[k][2]))
+                f[m++] = a[k][2];
+            else
+                firstF(a[k][2], a[k][0], k, 3);
+        }
+    }
+}
